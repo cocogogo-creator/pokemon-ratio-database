@@ -12,30 +12,59 @@ jobs:
     timeout-minutes: 120
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.9"
+          python-version: "3.11"
 
       - name: Install forum-dl
         run: |
           python -m pip install --upgrade pip
-          pip install forum-dl
 
-      - name: Collect threads
+          pip install chardet
+          pip install --no-deps forum-dl
+
+          pip install \
+            "pydantic<2" \
+            beautifulsoup4 \
+            lxml \
+            requests \
+            urllib3 \
+            tenacity \
+            dateparser \
+            html2text \
+            warcio
+
+      - name: Test forum-dl
+        run: |
+          forum-dl --help
+
+      - name: Collect Pokecardex threads
         shell: bash
         run: |
           mkdir -p data/threads
           : > data/errors.log
 
           while IFS= read -r url; do
-            [[ -z "$url" || "$url" =~ ^# ]] && continue
+
+            if [[ -z "$url" || "$url" =~ ^# ]]; then
+              continue
+            fi
 
             tid="$(printf '%s' "$url" | sed -n 's/.*[?&]t=\([0-9][0-9]*\).*/\1/p')"
-            echo "Collecting thread $tid"
+
+            if [ -z "$tid" ]; then
+              tid="$(printf '%s' "$url" | sha256sum | cut -c1-12)"
+            fi
+
+            echo ""
+            echo "=========================================="
+            echo "Collecting thread: $tid"
+            echo "$url"
+            echo "=========================================="
 
             if forum-dl \
               --no-files \
@@ -44,37 +73,53 @@ jobs:
               -o "data/threads/${tid}.jsonl" \
               "$url"
             then
-              echo "OK $tid"
+              echo "SUCCESS: $tid"
             else
               echo "$url" >> data/errors.log
-              echo "FAILED $tid"
+              echo "FAILED: $tid"
             fi
 
             sleep 3
+
           done < threads.txt
 
       - name: Merge corpus
         shell: bash
         run: |
-          find data/threads -type f -name '*.jsonl' -print0 \
-            | sort -z \
-            | xargs -0 cat > data/pokecardex_ratio_corpus.jsonl || true
+          touch data/pokecardex_ratio_corpus.jsonl
 
-          echo "Threads collected:"
+          find data/threads \
+            -type f \
+            -name '*.jsonl' \
+            -print0 \
+            | sort -z \
+            | xargs -0 -r cat \
+            > data/pokecardex_ratio_corpus.jsonl
+
+          echo ""
+          echo "=========================================="
+          echo "COLLECTION SUMMARY"
+          echo "=========================================="
+
+          echo "Thread files collected:"
           find data/threads -type f -name '*.jsonl' | wc -l
 
           echo "Corpus lines:"
-          wc -l data/pokecardex_ratio_corpus.jsonl || true
+          wc -l data/pokecardex_ratio_corpus.jsonl
 
-      - name: Save results
+          echo "Failed URLs:"
+          cat data/errors.log || true
+
+      - name: Save results to repository
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add data/
 
           if git diff --cached --quiet; then
-            echo "No changes."
+            echo "No new data to commit."
           else
             git commit -m "Collect Pokecardex ratio corpus"
             git push
@@ -84,6 +129,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pokecardex-ratio-corpus
-          path: data/
+          path: |
+            data/pokecardex_ratio_corpus.jsonl
+            data/threads/
+            data/errors.log
           if-no-files-found: warn
-        
+          retention-days: 30
