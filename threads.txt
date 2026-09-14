@@ -1,0 +1,33 @@
+# Pokécardex — fils Ratio identifiés
+# Un fil par ligne. forum-dl parcourt le fil complet.
+
+https://www.pokecardex.com/forums/viewtopic.php?t=23994
+https://www.pokecardex.com/forums/viewtopic.php?t=39633
+https://www.pokecardex.com/forums/viewtopic.php?t=40072
+https://www.pokecardex.com/forums/viewtopic.php?t=40546
+https://www.pokecardex.com/forums/viewtopic.php?t=42147
+https://www.pokecardex.com/forums/viewtopic.php?t=43059
+https://www.pokecardex.com/forums/viewtopic.php?t=43708
+https://www.pokecardex.com/forums/viewtopic.php?t=44261
+https://www.pokecardex.com/forums/viewtopic.php?t=44562
+https://www.pokecardex.com/forums/viewtopic.php?t=44727
+https://www.pokecardex.com/forums/viewtopic.php?t=45169
+https://www.pokecardex.com/forums/viewtopic.php?t=45593
+https://www.pokecardex.com/forums/viewtopic.php?t=45990
+https://www.pokecardex.com/forums/viewtopic.php?t=46224
+https://www.pokecardex.com/forums/viewtopic.php?t=46600
+https://www.pokecardex.com/forums/viewtopic.php?t=46840
+https://www.pokecardex.com/forums/viewtopic.php?t=47023
+https://www.pokecardex.com/forums/viewtopic.php?t=47230
+https://www.pokecardex.com/forums/viewtopic.php?t=47366
+https://www.pokecardex.com/forums/viewtopic.php?t=47624
+https://www.pokecardex.com/forums/viewtopic.php?t=47783
+https://www.pokecardex.com/forums/viewtopic.php?t=48161
+https://www.pokecardex.com/forums/viewtopic.php?t=48269
+https://www.pokecardex.com/forums/viewtopic.php?t=48669
+https://www.pokecardex.com/forums/viewtopic.php?t=49211
+https://www.pokecardex.com/forums/viewtopic.php?t=49415
+https://www.pokecardex.com/forums/viewtopic.php?t=49539
+https://www.pokecardex.com/forums/viewtopic.php?t=49764
+https://www.pokecardex.com/forums/viewtopic.php?t=50041
+https://www.pokecardex.com/forums/viewtopic.php?t=50259
